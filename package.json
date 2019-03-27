@@ -1,0 +1,23 @@
+{
+  "name": "weather_server",
+  "version": "1.0.0",
+  "description": "server bai tap lon phat trien ung dung di dong",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jindojojin/weather_server.git"
+  },
+  "keywords": [
+    "nodejs",
+    "weather"
+  ],
+  "author": "Tran Quang Linh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jindojojin/weather_server/issues"
+  },
+  "homepage": "https://github.com/jindojojin/weather_server#readme"
+}
