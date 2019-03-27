@@ -19,5 +19,9 @@
   "bugs": {
     "url": "https://github.com/jindojojin/weather_server/issues"
   },
-  "homepage": "https://github.com/jindojojin/weather_server#readme"
+  "homepage": "https://github.com/jindojojin/weather_server#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4"
+  }
 }
