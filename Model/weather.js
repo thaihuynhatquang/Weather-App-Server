@@ -63,6 +63,23 @@ var weather={
       return Promise.resolve(response.data);
     }
     else return Promise.reject("No response! [Model/weather.js/get_current_airpollution]");
+  },
+
+  get_5day_3hour_by_position: async function(lat,lon){
+    var API_URL="http://api.openweathermap.org/data/2.5/forecast?lat="+lat+"&lon="+lon;
+    var response= await axios.get(API_URL+API_KEY);
+    if(response.status=200){
+      return Promise.resolve(response.data);
+    }
+    else return Promise.reject("No response! [Model/weather.js/get__5day_3hour_by_position]");
+  },
+  get_5day_3hour_by_cityName: async function(cityName){
+    var API_URL="http://api.openweathermap.org/data/2.5/forecast?q=";
+    var response= await axios.get(API_URL+cityName+API_KEY);
+    if(response.status=200){
+      return Promise.resolve(response.data);
+    }
+    else return Promise.reject("No response! [Model/weather.js/get__5day_3hour_by_cityName]");
   }
 }
 
@@ -82,6 +99,25 @@ function extractCurrentData(data){
   result.wind_speed=data.wind.speed;// tốc độ gió
   result.wind_deg=data.wind.deg;//góc gió
   result.visibility=data.visibility/1000;//tầm nhìn (km)
+  return result;
+}
+
+function extractHourlyData(data){
+  var result= {};
+  result.time= data.dt_txt;
+  result.city= data.name;//tên thành phố
+  result.main= data.weather[0].main;//tình trạng thời tiết
+  result.iconId=data.weather[0].id;//id của icon
+  result.icon=data.weather[0].icon;//mã icon
+  result.description=data.weather[0].description;//mô tả
+  result.temp=data.main.temp;//nhiệt độ
+  result.pressure=data.main.pressure;//áp suất
+  result.humidity=data.main.humidity;//độ ẩm
+  result.temp_min=data.main.temp_min;//nhiệt độ thấp nhất
+  result.temp_max=data.main.temp_max;//nhiệt độ cao nhất
+  result.clouds=data.clouds.all;//độ che phủ của mây (%)
+  result.wind_speed=data.wind.speed;// tốc độ gió
+  result.wind_deg=data.wind.deg;//góc gió
   return result;
 }
 // // weather.get_current_weather_by_cityName("London");

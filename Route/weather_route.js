@@ -32,5 +32,38 @@ module.exports = {
             res.status(500);
             res.send();
         }) 
+    },
+    
+
+    send_fiveday_weather_by_location: function (req,res) {
+        console.log("Receive request get current weather by city name [Route/weather_route.js/send_fiveday_weather_by_location]");
+        
+        var lat=req.params.lat;
+        var lon=req.params.lon;
+        weather_model.get_5day_3hour_by_position(lat,lon)
+        .then(r => {
+            res.status(200);
+            res.send(r);
+        })
+        .catch(e => {
+            console.log(e);
+            res.status(500);
+            res.send();
+        }) 
+    },
+    send_fiveday_weather_by_cityName: function (req,res) {
+        console.log("Receive request get current weather by city name [Route/weather_route.js/send_fiveday_weather_by_location]");
+        
+        var cityName= req.params.cityName;
+        weather_model.get_5day_3hour_by_cityName(cityName)
+        .then(r => {
+            res.status(200);
+            res.send(r);
+        })
+        .catch(e => {
+            console.log(e);
+            res.status(500);
+            res.send();
+        }) 
     }
 }
