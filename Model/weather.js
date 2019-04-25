@@ -9,7 +9,16 @@ var weather={
       var result= extractCurrentData(response.data)
       var lat= response.data.coord.lat;
       var lon= response.data.coord.lon;
-      result.uv= await this.get_current_uv_by_position(lat,lon);
+      try {
+        result.uv= await this.get_current_uv_by_position(lat,lon);
+      } catch (error) {
+        result.uv="no data";        
+      }
+      try {
+        result.air_pollution= await this.get_current_airpollution(lat,lon);
+      } catch (error) {
+        result.air_pollution="no data";        
+      }
       return Promise.resolve(result);
     }
     else return Promise.reject("No response! [Model/weather.js/get_current_weather_by_cityName]");
@@ -21,7 +30,16 @@ var weather={
     if(response.status=200){
       //weatherAPI trả về kết quả
       var result= extractCurrentData(response.data)
-      result.uv= await this.get_current_uv_by_position(lat,lon);
+      try {
+        result.uv= await this.get_current_uv_by_position(lat,lon);
+      } catch (error) {
+        result.uv="no data";        
+      }
+      try {
+        result.air_pollution= await this.get_current_airpollution(lat,lon);
+      } catch (error) {
+        result.air_pollution="no data";        
+      }
       return Promise.resolve(result);
     }
     else return Promise.reject("No response! [Model/weather.js/get_current_weather_by_position]");
@@ -35,6 +53,16 @@ var weather={
       return Promise.resolve(response.data.value);
     }
     else return Promise.reject("No response! [Model/weather.js/get_uv_by_position]");
+  },
+
+  get_current_airpollution:async function(lat,lon){
+    var API_URL="http://api.openweathermap.org/pollution/v1/co/"+lat+","+lon+"/current.json?";
+    var response= await axios.get(API_URL+API_KEY);
+    if(response.status=200){
+      //weatherAPI trả về kết quả
+      return Promise.resolve(response.data);
+    }
+    else return Promise.reject("No response! [Model/weather.js/get_current_airpollution]");
   }
 }
 
