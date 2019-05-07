@@ -12,6 +12,7 @@ app.use((req, res, next) => {   // hỗ trợ nhận request post/get chứa coo
 // });
 var route= require('./Route/main_route');
 route.route(app);
+app.use('/img', express.static('images'));
 
 app.listen(process.env.PORT || 9000, () => {
     console.log("weather server đang hoạt động ở cổng 9000 !")

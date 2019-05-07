@@ -23,6 +23,10 @@
   "dependencies": {
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
-    "express": "^4.16.4"
+    "crypto": "^1.0.1",
+    "express": "^4.16.4",
+    "google-id-token-verifier": "^0.2.3",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.2.3"
   }
 }
