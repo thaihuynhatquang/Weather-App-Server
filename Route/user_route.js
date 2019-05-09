@@ -18,7 +18,7 @@ var user_router = {
                 }).catch(e=>{ // user chưa tồn tại
                     let newuser = {
                         name: tokenInfo.name,
-                        listBannedWebSite: [],
+                        // listBannedWebSite: [],
                         username: tokenInfo.email,
                         dark: tokenInfo.sub,
                     };
@@ -47,7 +47,7 @@ var user_router = {
             console.log(salt2);
             let newuser = {
                 name: req.body.name,
-                listBannedWebSite: [],
+                // listBannedWebSite: [],
                 username: req.body.username,
                 dark: salt2,
                 password: secure.encrypt(req.body.password, salt2)                
@@ -87,80 +87,6 @@ var user_router = {
             res.statusCode = 401;
             res.send();
         }
-    },
-    sendListComputer: function (req, res) {
-        console.log("đã vào chỗ xem danh sách nhân viên");
-        // console.log(req.body);
-        if(secure.verifyUserToken(req.body.tk)== null) {res.statusCode = 401; res.send(); return;}
-        db.getListComputers(req.body.userID).then(r => {
-            console.log("Đã gửi danh sách nhân viên");
-            res.statusCode = 200;
-            res.send(JSON.stringify(r));
-        }).catch(e => {
-            res.statusCode = 401;
-            res.send();
-        })
-    },
-
-    sendOverViewByUser: function (req, res) {
-        console.log(req.body);
-        if(secure.verifyUserToken(req.body.tk)== null) {res.statusCode = 401; res.send(); return;}
-        db.getOverViewByUser(req.body.userID, req.body.data.fromDate, req.body.data.toDate).then(r => {
-            console.log("Đã xử lý yêu cầu xem thống kê theo các máy");
-            res.statusCode = 200;
-            console.log(r);
-            res.send(JSON.stringify(r));
-        }).catch(e => {
-            res.statusCode = 401;
-            res.send();
-        })
-
-
-    },
-
-    sendOverViewByWebsite: function (req, res) {
-        // console.log(req.body);
-        if(secure.verifyUserToken(req.body.tk)== null) {res.statusCode = 401; res.send(); return;}
-        db.getOverViewByWebsite(req.body.userID, req.body.data.fromDate, req.body.data.toDate).then(r => {
-            console.log("Đã xử lý yêu cầu xem thống kê theo website");
-            res.statusCode = 200;
-            console.log(r);
-            res.send(JSON.stringify(r));
-        }).catch(e => {
-            res.statusCode = 401;
-            res.send();
-        })
-
-
-    },
-    sendListWebsite: function (req, res) {
-        // console.log(req.body);
-        if(secure.verifyUserToken(req.body.tk)== null) {res.statusCode = 401; res.send(); return;}
-        db.getBannedWebSites(req.body.userID, null).then(r => {
-            console.log("Đã xử lý yêu cầu xem website");
-            res.statusCode = 200;
-            console.log(r);
-            res.send(JSON.stringify(r));
-        }).catch(e => {
-            res.statusCode = 401;
-            res.send();
-        })
-
-
-    },
-    addListWebsite: function (req, res) {
-        // console.log(req.body);
-        if(secure.verifyUserToken(req.body.tk)== null) {res.statusCode = 401; res.send(); return;}
-
-        db.updateListBannedWebsite(req.body.userID, req.body.data.list).then(r => {
-            console.log("Đã xử lý yêu cầu update website");
-            res.statusCode = 201;
-            console.log(r);
-            res.send(JSON.stringify(r));
-        }).catch(e => {
-            res.statusCode = 401;
-            res.send();
-        })
     },
 
     sendUserInfo: function (req, res) {
