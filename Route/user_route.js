@@ -24,7 +24,7 @@ var user_router = {
                         username: tokenInfo.email,
                         dark: tokenInfo.sub,
                     };
-                    db.adduser(newuser).then(r => {
+                    db.addUser(newuser).then(r => {
                         let x = secure.createUserToken({u:tokenInfo.email,n:tokenInfo.name});
                         res.statusCode=200;
                         res.send(JSON.stringify({userID:r,token:x,name:tokenInfo.name}));
@@ -54,7 +54,7 @@ var user_router = {
                 dark: salt2,
                 password: secure.encrypt(req.body.password, salt2)                
             };
-            db.adduser(newuser).then(r => {
+            db.addUser(newuser).then(r => {
                 console.log(r);
                 res.statusCode = 201;
                 res.send("OK");
