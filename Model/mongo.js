@@ -1,10 +1,11 @@
 var mongoClient = require('mongodb').MongoClient;
-const url = require('../key').mongodb;
+const url = 'mongodb://server:5sLUdMe7XGk2iSM@ds153766.mlab.com:53766/weather';
+// 'mongodb://linh:dEG5kkBdWqFeCQ6@ds147454.mlab.com:47454/alpha'
 var ObjectId = require('mongodb').ObjectID;
 var dbmodel = {
     addUser: async function(user) {
         let client = await mongoClient.connect(url, { useNewUrlParser: true });
-        let db = client.db('weatherdatabase');
+        let db = client.db('weather');
         try {
             let object = await db.collection('User').findOne({username:user.username});
             if (object != null) return Promise.reject("usernameAlreadyInSystem")
@@ -18,7 +19,7 @@ var dbmodel = {
     },
     getUser: async function(username){
         let client = await mongoClient.connect(url, { useNewUrlParser: true });
-        let db = client.db('weatherdatabase');
+        let db = client.db('weather');
         try {
             let object = await db.collection('User').findOne({username:username});
             if (object != null) {

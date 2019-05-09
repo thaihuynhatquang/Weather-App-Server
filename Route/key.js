@@ -6,5 +6,5 @@ module.exports = {
         // callbackURL:'/auth/google/redirect'
     },
     jsecure: "messagefromserver",
-    mongodb: 'mongodb://server:V9ePET3VHLpAeTf@ds147436.mlab.com:47436/weatherdatabase'
+    mongodb: 'mongodb://linh:0001Sever@ds147436.mlab.com:47436/weatherdatabase'
 }
