@@ -1,7 +1,8 @@
 module.exports = {
     google: {
-        clientID: '934005979402-999m42b5gf5vek9og551g9hqpvbartu8.apps.googleusercontent.com',
-        clientSecret: 'tZ-Ao-jFMZ7ovPg1PlklRH2A',
+        androidID: '1006888220040-3vua1st0dqarg1tlnkgbe15je1m99nl5.apps.googleusercontent.com',
+        iosID:'1006888220040-905i11ihfvjq25cik2h0q7fsjpsg6vfj.apps.googleusercontent.com'
+        // clientSecret: 'tZ-Ao-jFMZ7ovPg1PlklRH2A',
         // callbackURL:'/auth/google/redirect'
     },
     jsecure: "messagefromserver",

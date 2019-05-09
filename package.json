@@ -4,7 +4,8 @@
   "description": "server bai tap lon phat trien ung dung di dong",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "test": "node index.js",
+    "start": "nodemon server --watch server --exec index.js"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
     "express": "^4.16.4",
     "google-id-token-verifier": "^0.2.3",
     "jsonwebtoken": "^8.5.1",
-    "mongodb": "^3.2.3"
+    "mongodb": "^3.2.3",
+    "morgan": "^1.9.1"
   }
 }
