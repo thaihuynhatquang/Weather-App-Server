@@ -12,7 +12,7 @@ var user_router = {
                 // use tokenInfo in here.
                 console.log(tokenInfo);
                 //kiểm tra đã tồn tại hay chưa
-                db.getuser(tokenInfo.email).then(r => {
+                db.getUser(tokenInfo.email).then(r => {
                     console.log("user đã tồn tại");
                     let x = secure.createUserToken({ u: r.username, n: r.name });
                     res.statusCode = 200;
