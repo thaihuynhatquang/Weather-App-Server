@@ -17,6 +17,13 @@ module.exports = {
     app.get("/weather/postcast5day/:cityName", (req, res) =>
       weather_route.send_fiveday_weather_by_cityName(req, res)
     ); //ok
+    // app.get("/user/auth", jsonParser, (req, res) => user_route.auth(req, res));
+    app.post("/user/login", jsonParser, (req, res) =>
+      user_route.login(req, res)
+    );
+    app.post("/user/register", jsonParser, (req, res) =>
+      user_route.register(req, res)
+    );
     app.post("/user/loginWithGoogle", jsonParser, (req, res) =>
       user_route.loginGoogle(req, res)
     );
