@@ -4,20 +4,20 @@ var verifier = require('google-id-token-verifier');
 var androidId = require('./key').google.androidID;
 var iosId = require('./key').google.iosID;
 var user_router = {
-    loginG: function(req,res){
+    loginG: function (req, res) {
         // console.log(req.body);
-        var clientId= (req.body.platform == "ios")?iosId:androidId;
+        var clientId = (req.body.platform == "ios") ? iosId : androidId;
         verifier.verify(req.body.token, clientId, function (err, tokenInfo) {
             if (!err) {
                 // use tokenInfo in here.
                 console.log(tokenInfo);
                 //kiểm tra đã tồn tại hay chưa
-                db.getuser(tokenInfo.email).then(r=>{
+                db.getuser(tokenInfo.email).then(r => {
                     console.log("user đã tồn tại");
-                        let x = secure.createUserToken({u:r.username,n:r.name});
-                        res.statusCode=200;
-                        res.send(JSON.stringify({userID:r._id,token:x,name:r.name}));
-                }).catch(e=>{ // user chưa tồn tại
+                    let x = secure.createUserToken({ u: r.username, n: r.name });
+                    res.statusCode = 200;
+                    res.send(JSON.stringify({ userID: r._id, token: x, name: r.name }));
+                }).catch(e => { // user chưa tồn tại
                     let newuser = {
                         name: tokenInfo.name,
                         // listBannedWebSite: [],
@@ -25,25 +25,25 @@ var user_router = {
                         dark: tokenInfo.sub,
                     };
                     db.addUser(newuser).then(r => {
-                        let x = secure.createUserToken({u:tokenInfo.email,n:tokenInfo.name});
-                        res.statusCode=200;
-                        res.send(JSON.stringify({userID:r,token:x,name:tokenInfo.name}));
+                        let x = secure.createUserToken({ u: tokenInfo.email, n: tokenInfo.name });
+                        res.statusCode = 200;
+                        res.send(JSON.stringify({ userID: r, token: x, name: tokenInfo.name }));
                     }).catch(e => {
                         console.log(e);
                         res.statusCode = 401;
                         res.send();
                     })
                 });
-                
-            }else{
-                res.statusCode=401;
+
+            } else {
+                res.statusCode = 401;
                 res.send();
             }
         });
     },
     register: function (req, res) {
         console.log(req.body)
-        if(req.body.username == null || req.body.password == null || req.body.name==null) {res.statusCode=402;res.send();return;}
+        if (req.body.username == null || req.body.password == null || req.body.name == null) { res.statusCode = 402; res.send(); return; }
         try {
             let salt2 = secure.createSalt();
             console.log(salt2);
@@ -52,12 +52,16 @@ var user_router = {
                 // listBannedWebSite: [],
                 username: req.body.username,
                 dark: salt2,
-                password: secure.encrypt(req.body.password, salt2)                
+                password: secure.encrypt(req.body.password, salt2)
             };
             db.addUser(newuser).then(r => {
                 console.log(r);
-                res.statusCode = 201;
-                res.send("OK");
+                // res.statusCode = 201;
+                // res.send("OK");
+
+                let x = secure.createUserToken({ u: newuser.username, n: newuser.name });
+                res.statusCode = 200;
+                res.send(JSON.stringify({ userID: r, token: x, name: newuser.name }));
             }).catch(e => {
                 console.log(e);
                 res.statusCode = 401;
@@ -69,17 +73,17 @@ var user_router = {
             res.send();
         }
     },
-    login:function(req,res){
+    login: function (req, res) {
         try {
             console.log(req.body)
-            db.getuser(req.body.username).then(r=>{
+            db.getuser(req.body.username).then(r => {
                 console.log(r);
-                if(secure.compare(req.body.password,r.password,r.dark)){
-                    let x = secure.createUserToken({u:r.username,n:r.name});
-                    res.statusCode=200;
-                    res.send(JSON.stringify({userID:r._id,token:x,name:r.name}));
+                if (secure.compare(req.body.password, r.password, r.dark)) {
+                    let x = secure.createUserToken({ u: r.username, n: r.name });
+                    res.statusCode = 200;
+                    res.send(JSON.stringify({ userID: r._id, token: x, name: r.name }));
                 }
-            }).catch(e=>{
+            }).catch(e => {
                 console.log(e);
                 res.statusCode = 401;
                 res.send();
@@ -93,8 +97,8 @@ var user_router = {
 
     sendUserInfo: function (req, res) {
         console.log(req.body);
-        
-        if(secure.verifyUserToken(req.body.token)== null) {res.statusCode = 401; res.send(); return;}
+
+        if (secure.verifyUserToken(req.body.token) == null) { res.statusCode = 401; res.send(); return; }
 
         db.getComputerInfo(req.params.id, req.params.firstID, req.params.number).then(r => {
             console.log("Đã xử lý yêu cầu xem info computer");
