@@ -6,8 +6,8 @@ module.exports = {
       "Receive request get current weather by location [Route/weather_route.js/send_current_weather_by_location]"
     );
 
-    var lat = req.params.lat;
-    var lon = req.params.lon;
+    var lat = req.query.lat;
+    var lon = req.query.lon;
     weather_model
       .get_current_weather_by_position(lat, lon)
       .then(r => {

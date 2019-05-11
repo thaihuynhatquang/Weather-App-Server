@@ -91,7 +91,13 @@ var weather = {
       lon;
     var response = await axios.get(API_URL + API_KEY);
     if ((response.status = 200)) {
-      return Promise.resolve(response.data);
+      var result = response.data;
+      try {
+        result.current = await this.get_current_weather_by_position(lat, lon);
+      } catch (error) {
+        result.current = null;
+      }
+      return Promise.resolve(result);
     } else
       return Promise.reject(
         "No response! [Model/weather.js/get__5day_3hour_by_position]"
@@ -130,6 +136,7 @@ var weather = {
 function extractCurrentData(data) {
   var result = {};
   result.city = data.name; //tên thành phố
+  result.country = data.sys.country;
   result.main = data.weather[0].main; //tình trạng thời tiết
   result.iconId = data.weather[0].id; //id của icon
   result.icon = data.weather[0].icon; //mã icon
@@ -146,24 +153,6 @@ function extractCurrentData(data) {
   return result;
 }
 
-function extractHourlyData(data) {
-  var result = {};
-  result.time = data.dt_txt;
-  result.city = data.name; //tên thành phố
-  result.main = data.weather[0].main; //tình trạng thời tiết
-  result.iconId = data.weather[0].id; //id của icon
-  result.icon = data.weather[0].icon; //mã icon
-  result.description = data.weather[0].description; //mô tả
-  result.temp = data.main.temp; //nhiệt độ
-  result.pressure = data.main.pressure; //áp suất
-  result.humidity = data.main.humidity; //độ ẩm
-  result.temp_min = data.main.temp_min; //nhiệt độ thấp nhất
-  result.temp_max = data.main.temp_max; //nhiệt độ cao nhất
-  result.clouds = data.clouds.all; //độ che phủ của mây (%)
-  result.wind_speed = data.wind.speed; // tốc độ gió
-  result.wind_deg = data.wind.deg; //góc gió
-  return result;
-}
 // // weather.get_current_weather_by_cityName("London");
 // weather.get_current_weather_by_position(35,139)
 // .then(r=> console.log(r)).catch(e=> console.log(e));
