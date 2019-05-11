@@ -106,6 +106,24 @@ var weather = {
       return Promise.reject(
         "No response! [Model/weather.js/get__5day_3hour_by_cityName]"
       );
+  },
+  get_list_city: async function(cityName) {
+    var API_URL = "https://openweathermap.org/data/2.5/find?q=";
+    var API_KEY = "&appid=b6907d289e10d714a6e88b30761fae22&units=metric";
+    var cityNameEncode = encodeURIComponent(cityName);
+    var response = await axios.get(API_URL + cityNameEncode + API_KEY);
+    if ((response.status = 200)) {
+      const listCity = response.data.list.map(city => {
+        return {
+          id: city.id,
+          name: city.name,
+          coord: city.coord,
+          country: city.sys.country
+        };
+      });
+      return Promise.resolve(listCity);
+    } else
+      return Promise.reject("No response! [Model/weather.js/get_list_city]");
   }
 };
 

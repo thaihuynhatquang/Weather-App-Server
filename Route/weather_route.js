@@ -76,5 +76,23 @@ module.exports = {
         res.status(500);
         res.send("error server");
       });
+  },
+  send_list_city: function(req, res) {
+    console.log(
+      "Receive request find list city [Route/weather_route.js/send_list_city]"
+    );
+    var cityName = req.query.cityName;
+    console.log(cityName, "test citynam");
+    weather_model
+      .get_list_city(cityName)
+      .then(r => {
+        res.status(200);
+        res.send(r);
+      })
+      .catch(e => {
+        console.log(e);
+        res.status(500);
+        res.send("error server");
+      });
   }
 };

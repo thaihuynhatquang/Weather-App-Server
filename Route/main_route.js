@@ -17,6 +17,9 @@ module.exports = {
     app.get("/weather/postcast5day/:cityName", (req, res) =>
       weather_route.send_fiveday_weather_by_cityName(req, res)
     ); //ok
+    app.get("/weather/find/", (req, res) =>
+      weather_route.send_list_city(req, res)
+    ); //ok
     // app.get("/user/auth", jsonParser, (req, res) => user_route.auth(req, res));
     app.post("/user/login", jsonParser, (req, res) =>
       user_route.login(req, res)
