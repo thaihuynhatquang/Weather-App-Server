@@ -37,11 +37,12 @@ var user_router = {
               n: r.name
             });
             res.statusCode = 200;
-            res.send(JSON.stringify({ userID: r._id, token: x, name: r.name }));
+            res.send(JSON.stringify({ userID: r._id, token: x, name: r.name, avatar: r.avatar }));
           })
           .catch(e => {
             // user chưa tồn tại
             let newuser = {
+              avatar: tokenInfo.picture,
               name: tokenInfo.name,
               // listBannedWebSite: [],
               username: tokenInfo.email,
@@ -58,7 +59,8 @@ var user_router = {
                   JSON.stringify({
                     userID: r,
                     token: x,
-                    name: tokenInfo.name
+                    name: tokenInfo.name,
+                    avatar: tokenInfo.picture
                   })
                 );
               })

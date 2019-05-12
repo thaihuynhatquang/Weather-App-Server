@@ -27,5 +27,6 @@ module.exports = {
     app.post("/user/loginWithGoogle", jsonParser, (req, res) =>
       user_route.loginGoogle(req, res)
     );
+    
   }
 };
