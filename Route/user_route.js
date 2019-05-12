@@ -25,8 +25,6 @@ var user_router = {
     var clientId = req.body.platform == "ios" ? iosId : androidId;
     verifier.verify(req.body.token, clientId, function(err, tokenInfo) {
       if (!err) {
-        // use tokenInfo in here.
-        z; //kiểm tra đã tồn tại hay chưa
         db.getUser(tokenInfo.email)
           .then(r => {
             console.log(r);
