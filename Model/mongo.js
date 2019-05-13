@@ -87,6 +87,23 @@ var dbmodel = {
     } finally {
       client.close();
     }
+  },
+  getNews: async function (newsID) {
+    let client = await mongoClient.connect(url, { useNewUrlParser: true });
+    let db = client.db("weather");
+    try {
+      let object = await db.collection("News").findOne({ _id: ObjectId(newsID) });
+      if (object != null) {
+        object.time_create= ObjectId(object._id).getTimestamp();
+        delete object["location"];
+        return Promise.resolve(object);
+      }
+      return Promise.reject("notFound");
+    } catch (error) {
+      return Promise.reject(error);
+    } finally {
+      client.close();
+    }
   }
 };
 function getDistance(lat1, lon1, lat2, lon2) {

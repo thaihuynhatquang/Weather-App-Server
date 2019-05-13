@@ -50,7 +50,15 @@ module.exports = {
     }
   },
   getNews: function (req, res) {
-
+      let newsID= req.params.newsID;
+      db.getNews(newsID).then(r=>{
+        res.statusCode=200;
+        res.send(r);
+      }).catch(e=>{
+        res.statusCode=500;
+        console.log(e);
+        res.send();
+      })
   },
   addNews: function (req, res) {
     let user = secure.verifyUserToken(req.headers.token);
