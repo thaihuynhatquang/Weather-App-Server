@@ -130,6 +130,15 @@ var weather = {
       return Promise.resolve(listCity);
     } else
       return Promise.reject("No response! [Model/weather.js/get_list_city]");
+  },
+  get_address_by_location: async function(lat,lon) {
+    var API_URL = "https://api.opencagedata.com/geocode/v1/json?q=";
+    var API_KEY = "&key=55f3c34bb9a3424d96a72154deca11ea&no_annotations=1&language=vi";
+    var response = await axios.get(API_URL + lat+"+"+lon + API_KEY);
+    if ((response.status = 200)) {
+      return Promise.resolve(response.data.results[0].formatted);
+    } else
+      return Promise.reject("No response! [Model/weather.js/get_list_city]");
   }
 };
 
@@ -153,8 +162,8 @@ function extractCurrentData(data) {
   return result;
 }
 
+module.exports = weather;
 // // weather.get_current_weather_by_cityName("London");
-// weather.get_current_weather_by_position(35,139)
+// weather.get_address_by_location(21,105.7783)
 // .then(r=> console.log(r)).catch(e=> console.log(e));
 // weather.get_current_uv_by_position(35,139.6).then(r=>console.log(r)).catch(e=>console.log(e));
-module.exports = weather;
