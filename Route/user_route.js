@@ -5,22 +5,16 @@ var androidId = require("./key").google.androidID;
 var iosId = require("./key").google.iosID;
 
 var user_router = {
-  // auth: function(req, res) {
-  //   var token = req.body.token;
-  //   if (secure.verifyUserToken(token)) {
-  //     let user = secure.verifyUserToken(token);
-  //     res.statusCode = 200;
-  //     res.send(
-  //       JSON.stringify({
-  //         token: token,
-  //         name: user.n
-  //       })
-  //     );
-  //   } else {
-  //     res.statusCode = 401;
-  //     res.send();
-  //   }
-  // },
+  auth: function(req, res) {
+    var token = req.body.token;
+    if (secure.verifyUserToken(token)) {
+      res.statusCode = 200;
+      res.send("Authenticated");
+    } else {
+      res.statusCode = 401;
+      res.send("Unauthenticated");
+    }
+  },
   loginGoogle: function(req, res) {
     var clientId = req.body.platform == "ios" ? iosId : androidId;
     verifier.verify(req.body.token, clientId, function(err, tokenInfo) {
@@ -57,7 +51,7 @@ var user_router = {
                 let x = secure.createUserToken({
                   u: tokenInfo.email,
                   n: tokenInfo.name,
-                  i:id
+                  i: id
                 });
                 res.statusCode = 200;
                 res.send(
