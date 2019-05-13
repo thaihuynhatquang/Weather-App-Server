@@ -33,6 +33,22 @@ var dbmodel = {
     } finally {
       client.close();
     }
+  },
+  getListNews: async function  (limit,offset) {
+    let client = await mongoClient.connect(url, { useNewUrlParser: true });
+    let db = client.db("weather");
+    try {
+      let count= await db.collection("News").find().count();
+      let object = await db.collection("News").find().skip(offset).limit(limit).toArray();
+      if (object != null) {
+        return Promise.resolve({news_Arr:object,total:count});
+      }
+      return Promise.reject("notFound");
+    } catch (error) {
+      return Promise.reject(error);
+    } finally {
+      client.close();
+    }
   }
 };
 function objectIdWithTimestamp(timestamp) {
@@ -48,3 +64,4 @@ function objectIdWithTimestamp(timestamp) {
 }
 
 module.exports = dbmodel;
+// dbmodel.getListNews(4,0).then(r=> console.log(r)).catch(e=> console.log(e));

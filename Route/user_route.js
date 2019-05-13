@@ -34,7 +34,8 @@ var user_router = {
             console.log(r);
             let x = secure.createUserToken({
               u: r.username,
-              n: r.name
+              n: r.name,
+              i: r._id
             });
             res.statusCode = 200;
             res.send(JSON.stringify({ userID: r._id, token: x, name: r.name, avatar: r.avatar }));
@@ -49,15 +50,16 @@ var user_router = {
               dark: tokenInfo.sub
             };
             db.addUser(newuser)
-              .then(r => {
+              .then(id => {
                 let x = secure.createUserToken({
                   u: tokenInfo.email,
-                  n: tokenInfo.name
+                  n: tokenInfo.name,
+                  i:id
                 });
                 res.statusCode = 200;
                 res.send(
                   JSON.stringify({
-                    userID: r,
+                    userID: id,
                     token: x,
                     name: tokenInfo.name,
                     avatar: tokenInfo.picture

@@ -22,3 +22,40 @@
                 // 8.0–10.9	Nguy cơ gây hại từ tia cực tím rất cao=>	Bôi kem chống nắng SPF 30+, mặc áo sơ-mi, kính râm, và đội mũ. Không nên đứng dưới nắng quá lâu.
                 // 11.0+	Nguy cơ gây hại từ tia cực tím cực cao =>	Mang tất cả các biện pháp phòng ngừa, bao gồm: thoa kem chống nắng SPF 30+, kính râm, áo sơ-mi dài tay, quần dài, đội mũ rộng vành, và tránh ánh nắng mặt trời 3 giờ trước và sau giữa trưa.
 }
+
+
+//news:
+{
+  newsID:string,
+  authorID: string,//userID của người đăng bài
+  authorName:string,
+  time_create: ISO-8601,
+  location:string,
+  tile:string,
+  picture:string,
+  content:string,
+}
+
+
+//listNews:
+{
+  total: number,//tổng số tin tức trên server
+  next_offset:number,//trang tiếp theo =null => không có trang trước đó.
+  prev_offset:number,//trang trước đó  =null => không có trang tiếp theo.
+  news_Arr: [
+    {
+      newID:string,
+      title:string, //tiêu đề bài đăng.
+      picture: string,//nơi ảnh lưu trên server    VD: /news/adfhiaudf32543432jdsa.png -> truy cập bằng http://localhost:9000/img/news/adfhiaudf32543432jdsa.png
+      time_create: ISO-8601,//thời gian của bài đăng
+      location: string,// tên địa điểm đăng bài, parse từ coords.
+      distance: number,//(km) //khoảng cách ước lượng từ nơi đăng bài đến địa điểm hiện tại
+    },
+    {},
+    ....
+  ],
+   //
+}
+
+
+
