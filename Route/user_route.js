@@ -22,13 +22,9 @@ var user_router = {
   //   }
   // },
   loginGoogle: function(req, res) {
-    // console.log(req.body);
     var clientId = req.body.platform == "ios" ? iosId : androidId;
     verifier.verify(req.body.token, clientId, function(err, tokenInfo) {
       if (!err) {
-        // use tokenInfo in here.
-        console.log(tokenInfo);
-        //kiểm tra đã tồn tại hay chưa
         db.getUser(tokenInfo.email)
           .then(r => {
             console.log(r);
@@ -38,7 +34,14 @@ var user_router = {
               i: r._id
             });
             res.statusCode = 200;
-            res.send(JSON.stringify({ userID: r._id, token: x, name: r.name, avatar: r.avatar }));
+            res.send(
+              JSON.stringify({
+                userID: r._id,
+                token: x,
+                name: r.name,
+                avatar: r.avatar
+              })
+            );
           })
           .catch(e => {
             // user chưa tồn tại
@@ -79,7 +82,6 @@ var user_router = {
     });
   },
   register: function(req, res) {
-    console.log(req.body);
     if (
       req.body.username == null ||
       req.body.password == null ||
@@ -125,7 +127,6 @@ var user_router = {
   },
   login: function(req, res) {
     try {
-      console.log(req.body);
       db.getuser(req.body.username)
         .then(r => {
           console.log(r);
@@ -148,8 +149,6 @@ var user_router = {
   },
 
   sendUserInfo: function(req, res) {
-    console.log(req.body);
-
     if (secure.verifyUserToken(req.body.token) == null) {
       res.statusCode = 401;
       res.send();
@@ -158,7 +157,6 @@ var user_router = {
 
     db.getComputerInfo(req.params.id, req.params.firstID, req.params.number)
       .then(r => {
-        console.log("Đã xử lý yêu cầu xem info computer");
         res.statusCode = 200;
         console.log(r);
         res.send(JSON.stringify(r));

@@ -1,7 +1,7 @@
 const express = require("express");
+var morgan = require("morgan");
 const app = express();
-var morgan = require('morgan');
-app.use(morgan('combined'));
+app.use(morgan("dev"));
 app.use((req, res, next) => {
   // hỗ trợ nhận request post/get chứa cookie dạng json từ client
   res.setHeader("Access-Control-Allow-Origin", "*");
