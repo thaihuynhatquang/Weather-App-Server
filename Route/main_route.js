@@ -17,14 +17,8 @@ module.exports = {
     app.get("/weather/postcast5day/", (req, res) =>
       weather_route.send_fiveday_weather_by_location(req, res)
     ); //ok
-    app.get("/weather/postcast5day_new/", (req, res) =>
-      weather_route.send_fiveday_weather_by_location_new(req, res)
-    ); //ok
     app.get("/weather/postcast5day/:cityName", (req, res) =>
       weather_route.send_fiveday_weather_by_cityName(req, res)
-    ); //ok
-    app.get("/weather/postcast5day_new/:cityName", (req, res) =>
-      weather_route.send_fiveday_weather_by_cityName_new(req, res)
     ); //ok
     app.get("/weather/find/", (req, res) =>
       weather_route.send_list_city(req, res)
@@ -51,13 +45,13 @@ module.exports = {
       jsonParser,
       (req, res) => news_route.addNews(req, res)
     );
-    app.get("/news/newsID=:newsID", (req, res) => 
-      news_route.getNews(req, res)
+    app.get("/news/newsID=:newsID", (req, res) => news_route.getNews(req, res));
+    app.post(
+      "/news/new_post",
+      upload.single("fileData"),
+      jsonParser,
+      (req, res) => news_route.addNews(req, res)
     );
-    app.post("/news/new_post",upload.single('fileData'), jsonParser, (req, res) =>
-      news_route.addNews(req, res)
-    );
-
   }
 };
 
