@@ -104,6 +104,18 @@ var dbmodel = {
     } finally {
       client.close();
     }
+  },
+  addNews: async function(newsObject) {
+    let client = await mongoClient.connect(url, { useNewUrlParser: true });
+    let db = client.db("weather");
+    try {
+      let a = await db.collection("News").insertOne(newsObject);
+      return Promise.resolve(a.insertedId);
+    } catch (error) {
+      return Promise.reject(error);
+    } finally {
+      client.close();
+    }
   }
 };
 function getDistance(lat1, lon1, lat2, lon2) {
