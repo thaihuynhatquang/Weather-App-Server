@@ -1,6 +1,10 @@
 const express = require("express");
 var morgan = require("morgan");
 const app = express();
+var multer = require('multer');
+var upload = multer();
+const fileUpload = require('express-fileupload');
+app.use(fileUpload());
 app.use(morgan("dev"));
 app.use((req, res, next) => {
   // hỗ trợ nhận request post/get chứa cookie dạng json từ client
@@ -18,6 +22,7 @@ app.use((req, res, next) => {
 // });
 var route = require("./Route/main_route");
 route.route(app);
+app.use(upload.array());
 app.use("/img", express.static("images"));
 
 app.listen(process.env.PORT || 9000, () => {

@@ -2,11 +2,9 @@ var jsonParser = require("body-parser").json(); // nhận json từ client
 var weather_route = require("./weather_route");
 var user_route = require("./user_route");
 var news_route = require("./news_route");
-const multer = require("multer");
-var upload = multer({ dest: "images/news/" });
 
 module.exports = {
-  route: function(app) {
+  route: function (app) {
     app.get("/", (req, res) => res.send("Hello, I am OK now!"));
     app.get("/weather/current/", (req, res) =>
       weather_route.send_current_weather_by_location(req, res)
@@ -39,19 +37,8 @@ module.exports = {
     // ?limit=:limit/offset=:offset/order=:order/lat=:lat/lon=:lon
     app.get("/news/", (req, res) => news_route.getListNews(req, res));
     app.get("/news/newsID=:newsID", (req, res) => news_route.getNews(req, res));
-    app.post(
-      "/news/new_post",
-      upload.single("fileData"),
-      jsonParser,
-      (req, res) => news_route.addNews(req, res)
-    );
     app.get("/news/newsID=:newsID", (req, res) => news_route.getNews(req, res));
-    app.post(
-      "/news/new_post",
-      upload.single("fileData"),
-      jsonParser,
-      (req, res) => news_route.addNews(req, res)
-    );
+    app.post("/news/newpost", (req, res) => news_route.addNews(req, res));
   }
 };
 

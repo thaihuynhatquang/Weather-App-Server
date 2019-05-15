@@ -5,7 +5,7 @@ var androidId = require("./key").google.androidID;
 var iosId = require("./key").google.iosID;
 
 var user_router = {
-  auth: function(req, res) {
+  auth: function (req, res) {
     var token = req.body.token;
     if (secure.verifyUserToken(token)) {
       res.statusCode = 200;
@@ -15,9 +15,9 @@ var user_router = {
       res.send("Unauthenticated");
     }
   },
-  loginGoogle: function(req, res) {
+  loginGoogle: function (req, res) {
     var clientId = req.body.platform == "ios" ? iosId : androidId;
-    verifier.verify(req.body.token, clientId, function(err, tokenInfo) {
+    verifier.verify(req.body.token, clientId, function (err, tokenInfo) {
       if (!err) {
         db.getUser(tokenInfo.email)
           .then(r => {
@@ -75,7 +75,7 @@ var user_router = {
       }
     });
   },
-  register: function(req, res) {
+  register: function (req, res) {
     if (
       req.body.username == null ||
       req.body.password == null ||
@@ -119,7 +119,7 @@ var user_router = {
       res.send();
     }
   },
-  login: function(req, res) {
+  login: function (req, res) {
     try {
       db.getuser(req.body.username)
         .then(r => {
@@ -141,8 +141,9 @@ var user_router = {
       res.send();
     }
   },
-
-  sendUserInfo: function(req, res) {
+  addFavoriteCity: function (req, res) {
+  },
+  sendUserInfo: function (req, res) {
     if (secure.verifyUserToken(req.body.token) == null) {
       res.statusCode = 401;
       res.send();

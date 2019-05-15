@@ -3,7 +3,7 @@ const url = "mongodb://server:5sLUdMe7XGk2iSM@ds153766.mlab.com:53766/weather";
 // 'mongodb://linh:dEG5kkBdWqFeCQ6@ds147454.mlab.com:47454/alpha'
 var ObjectId = require("mongodb").ObjectID;
 var dbmodel = {
-  addUser: async function(user) {
+  addUser: async function (user) {
     let client = await mongoClient.connect(url, { useNewUrlParser: true });
     let db = client.db("weather");
     try {
@@ -19,7 +19,7 @@ var dbmodel = {
       client.close();
     }
   },
-  getUser: async function(username) {
+  getUser: async function (username) {
     let client = await mongoClient.connect(url, { useNewUrlParser: true });
     let db = client.db("weather");
     try {
@@ -34,21 +34,21 @@ var dbmodel = {
       client.close();
     }
   },
-  getListNews: async function  (limit,offset,lat,lon) {
+  getListNews: async function (limit, offset, lat, lon) {
     let client = await mongoClient.connect(url, { useNewUrlParser: true });
     let db = client.db("weather");
     try {
-      let count= await db.collection("News").find().count();
-      let arr = await db.collection("News").find().sort({_id:-1}).skip(offset).limit(limit).toArray();
-      for(let i=0 ; i<arr.length;i++){
-        arr[i].time_create= ObjectId(arr[i]._id).getTimestamp();
-        lati= arr[i].location.coordinates[0];
-        loni= arr[i].location.coordinates[1];
-        arr[i].distance=getDistance(lat,lon,lati,loni);
+      let count = await db.collection("News").find().count();
+      let arr = await db.collection("News").find().sort({ _id: -1 }).skip(offset).limit(limit).toArray();
+      for (let i = 0; i < arr.length; i++) {
+        arr[i].time_create = ObjectId(arr[i]._id).getTimestamp();
+        lati = arr[i].location.coordinates[0];
+        loni = arr[i].location.coordinates[1];
+        arr[i].distance = getDistance(lat, lon, lati, loni);
         delete arr[i]["location"];
       }
       if (arr != null) {
-        return Promise.resolve({news_Arr:arr,total:count});
+        return Promise.resolve({ news_Arr: arr, total: count });
       }
       return Promise.reject("notFound");
     } catch (error) {
@@ -57,29 +57,30 @@ var dbmodel = {
       client.close();
     }
   },
-  getListNews_orderByLocation:async function(limit,offset,lat,lon){
+  getListNews_orderByLocation: async function (limit, offset, lat, lon) {
     let client = await mongoClient.connect(url, { useNewUrlParser: true });
     let db = client.db("weather");
     try {
       let query = {
         location:
-          { $near :
-             {
-               $geometry: { type: "Point",  coordinates: [ lon, lat ] },
-             }
+        {
+          $near:
+          {
+            $geometry: { type: "Point", coordinates: [lon, lat] },
           }
+        }
       };
-      let count= await db.collection("News").find().count();
+      let count = await db.collection("News").find().count();
       let arr = await db.collection("News").find(query).skip(offset).limit(limit).toArray();
-      for(let i=0 ; i<arr.length;i++){
-        arr[i].time_create= ObjectId(arr[i]._id).getTimestamp();
-        lati= arr[i].location.coordinates[0];
-        loni= arr[i].location.coordinates[1];
-        arr[i].distance=getDistance(lat,lon,lati,loni);
+      for (let i = 0; i < arr.length; i++) {
+        arr[i].time_create = ObjectId(arr[i]._id).getTimestamp();
+        lati = arr[i].location.coordinates[0];
+        loni = arr[i].location.coordinates[1];
+        arr[i].distance = getDistance(lat, lon, lati, loni);
         delete arr[i]["location"];
       }
       if (arr != null) {
-        return Promise.resolve({news_Arr:arr,total:count});
+        return Promise.resolve({ news_Arr: arr, total: count });
       }
       return Promise.reject("notFound");
     } catch (error) {
@@ -94,7 +95,7 @@ var dbmodel = {
     try {
       let object = await db.collection("News").findOne({ _id: ObjectId(newsID) });
       if (object != null) {
-        object.time_create= ObjectId(object._id).getTimestamp();
+        object.time_create = ObjectId(object._id).getTimestamp();
         delete object["location"];
         return Promise.resolve(object);
       }
@@ -105,10 +106,14 @@ var dbmodel = {
       client.close();
     }
   },
-  addNews: async function(newsObject) {
+  addNews: async function (newsObject, lat, lon) {
     let client = await mongoClient.connect(url, { useNewUrlParser: true });
     let db = client.db("weather");
     try {
+      newsObject.location = {
+        type: "Point",
+        coordinates: [lat, lon]
+      }
       let a = await db.collection("News").insertOne(newsObject);
       return Promise.resolve(a.insertedId);
     } catch (error) {
@@ -119,20 +124,20 @@ var dbmodel = {
   }
 };
 function getDistance(lat1, lon1, lat2, lon2) {
-	var R = 6371; // Radius of the earth in km
-	var dLat = deg2rad(lat2 - lat1); // deg2rad below
-	var dLon = deg2rad(lon2 - lon1);
-	var a =
-		Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-		Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-		Math.sin(dLon / 2) * Math.sin(dLon / 2);
-	var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-	var d = R * c; // Distance in km
-	return d;
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2 - lat1); // deg2rad below
+  var dLon = deg2rad(lon2 - lon1);
+  var a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c; // Distance in km
+  return d;
 }
 
 function deg2rad(deg) {
-	return deg * (Math.PI / 180)
+  return deg * (Math.PI / 180)
 }
 
 
