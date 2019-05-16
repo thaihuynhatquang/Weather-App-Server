@@ -141,7 +141,24 @@ var user_router = {
       res.send();
     }
   },
-  addFavoriteCity: function (req, res) {
+  updateFavoriteCity: function (req, res) {
+    let user = secure.verifyUserToken(req.headers.authorization);
+    // console.log(req.headers);
+    // let user = { username: "tranquanglinh.pt@gmail.com", i: "5cd7d04fc44be55e88ce79cc" };
+    if (user == null) {
+      // token không xác thực được
+      res.statusCode = 401;
+      res.send();
+    } else {
+      let favorObject = req.body;
+      db.updateFavorite(user.i, favorObject).then(r => {
+        res.statusCode = 201;
+        res.send();
+      }).catch(e => {
+        res.statusCode = 500;
+        res.send();
+      })
+    }
   },
   sendUserInfo: function (req, res) {
     if (secure.verifyUserToken(req.body.token) == null) {

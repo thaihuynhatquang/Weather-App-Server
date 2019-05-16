@@ -121,6 +121,20 @@ var dbmodel = {
     } finally {
       client.close();
     }
+  },
+  updateFavorite: async function (userID, favoriteObject) {
+    let client = await mongoClient.connect(url, { useNewUrlParser: true });
+    let db = client.db("weather");
+    try {
+      let query = { _id: ObjectId(userID) };
+      let update = { $set: { "favorites": favoriteObject } }
+      let a = await db.collection("User").updateOne(query, update);
+      return Promise.resolve();
+    } catch (error) {
+      return Promise.reject(error);
+    } finally {
+      client.close();
+    }
   }
 };
 function getDistance(lat1, lon1, lat2, lon2) {
@@ -133,7 +147,7 @@ function getDistance(lat1, lon1, lat2, lon2) {
     Math.sin(dLon / 2) * Math.sin(dLon / 2);
   var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   var d = R * c; // Distance in km
-  return d;
+  return d / 10;
 }
 
 function deg2rad(deg) {
