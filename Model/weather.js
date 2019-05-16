@@ -1,7 +1,7 @@
 const axios = require("axios");
 const API_KEY = "&appid=58d7143e8d3b465efbd462516a49c7c1&units=metric";
 var weather = {
-  get_current_weather_by_cityName: async function (cityName) {
+  get_current_weather_by_cityName: async function(cityName) {
     var API_URL = "http://api.openweathermap.org/data/2.5/weather?q=";
     var response = await axios.get(API_URL + cityName + API_KEY);
     if ((response.status = 200)) {
@@ -26,7 +26,7 @@ var weather = {
       );
   },
 
-  get_current_weather_by_position: async function (lat, lon) {
+  get_current_weather_by_position: async function(lat, lon) {
     var API_URL =
       "http://api.openweathermap.org/data/2.5/weather?lat=" +
       lat +
@@ -53,7 +53,7 @@ var weather = {
       );
   },
 
-  get_current_uv_by_position: async function (lat, lon) {
+  get_current_uv_by_position: async function(lat, lon) {
     var API_URL =
       "http://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon;
     var response = await axios.get(API_URL + API_KEY);
@@ -66,7 +66,7 @@ var weather = {
       );
   },
 
-  get_current_airpollution: async function (lat, lon) {
+  get_current_airpollution: async function(lat, lon) {
     var API_URL =
       "http://api.openweathermap.org/pollution/v1/co/" +
       lat +
@@ -83,7 +83,7 @@ var weather = {
       );
   },
 
-  get_5day_3hour_by_position: async function (lat, lon) {
+  get_5day_3hour_by_position: async function(lat, lon) {
     var API_URL =
       "http://api.openweathermap.org/data/2.5/forecast?lat=" +
       lat +
@@ -103,13 +103,13 @@ var weather = {
         "No response! [Model/weather.js/get__5day_3hour_by_position]"
       );
   },
-  get_5day_3hour_by_cityName: async function (cityName) {
+  get_5day_3hour_by_cityName: async function(cityName) {
     var API_URL = "http://api.openweathermap.org/data/2.5/forecast?q=";
     var response = await axios.get(API_URL + cityName + API_KEY);
     if ((response.status = 200)) {
       var result = response.data;
       try {
-        result.current = await this.get_current_weather_by_position(lat, lon);
+        result.current = await this.get_current_weather_by_cityName(cityName);
       } catch (error) {
         result.current = null;
       }
@@ -119,7 +119,7 @@ var weather = {
         "No response! [Model/weather.js/get__5day_3hour_by_cityName]"
       );
   },
-  get_list_city: async function (cityName) {
+  get_list_city: async function(cityName) {
     var API_URL = "https://openweathermap.org/data/2.5/find?q=";
     var API_KEY = "&appid=b6907d289e10d714a6e88b30761fae22&units=metric";
     var cityNameEncode = encodeURIComponent(cityName);
@@ -137,9 +137,10 @@ var weather = {
     } else
       return Promise.reject("No response! [Model/weather.js/get_list_city]");
   },
-  get_address_by_location: async function (lat, lon) {
+  get_address_by_location: async function(lat, lon) {
     var API_URL = "https://api.opencagedata.com/geocode/v1/json?q=";
-    var API_KEY = "&key=55f3c34bb9a3424d96a72154deca11ea&no_annotations=1&language=vi";
+    var API_KEY =
+      "&key=55f3c34bb9a3424d96a72154deca11ea&no_annotations=1&language=vi";
     var response = await axios.get(API_URL + lat + "+" + lon + API_KEY);
     if ((response.status = 200)) {
       return Promise.resolve(response.data.results[0].formatted);
