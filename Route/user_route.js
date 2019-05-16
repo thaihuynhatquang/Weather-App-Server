@@ -5,19 +5,19 @@ var androidId = require("./key").google.androidID;
 var iosId = require("./key").google.iosID;
 
 var user_router = {
-  auth: function (req, res) {
+  auth: function(req, res) {
     var token = req.body.token;
     if (secure.verifyUserToken(token)) {
       res.statusCode = 200;
-      res.send("Authenticated");
+      res.send(req.body.favorite);
     } else {
       res.statusCode = 401;
       res.send("Unauthenticated");
     }
   },
-  loginGoogle: function (req, res) {
+  loginGoogle: function(req, res) {
     var clientId = req.body.platform == "ios" ? iosId : androidId;
-    verifier.verify(req.body.token, clientId, function (err, tokenInfo) {
+    verifier.verify(req.body.token, clientId, function(err, tokenInfo) {
       if (!err) {
         db.getUser(tokenInfo.email)
           .then(r => {
@@ -78,7 +78,7 @@ var user_router = {
       }
     });
   },
-  register: function (req, res) {
+  register: function(req, res) {
     if (
       req.body.username == null ||
       req.body.password == null ||
@@ -122,7 +122,7 @@ var user_router = {
       res.send();
     }
   },
-  login: function (req, res) {
+  login: function(req, res) {
     try {
       db.getuser(req.body.username)
         .then(r => {
@@ -144,7 +144,7 @@ var user_router = {
       res.send();
     }
   },
-  updateFavoriteCity: function (req, res) {
+  updateFavoriteCity: function(req, res) {
     let user = secure.verifyUserToken(req.headers.authorization);
     // console.log(req.headers);
     // let user = { username: "tranquanglinh.pt@gmail.com", i: "5cd7d04fc44be55e88ce79cc" };
@@ -154,16 +154,18 @@ var user_router = {
       res.send();
     } else {
       let favorObject = req.body;
-      db.updateFavorite(user.i, favorObject).then(r => {
-        res.statusCode = 201;
-        res.send();
-      }).catch(e => {
-        res.statusCode = 500;
-        res.send();
-      })
+      db.updateFavorite(user.i, favorObject)
+        .then(r => {
+          res.statusCode = 201;
+          res.send();
+        })
+        .catch(e => {
+          res.statusCode = 500;
+          res.send();
+        });
     }
   },
-  sendUserInfo: function (req, res) {
+  sendUserInfo: function(req, res) {
     if (secure.verifyUserToken(req.body.token) == null) {
       res.statusCode = 401;
       res.send();
