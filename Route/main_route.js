@@ -4,7 +4,7 @@ var user_route = require("./user_route");
 var news_route = require("./news_route");
 
 module.exports = {
-  route: function (app) {
+  route: function(app) {
     app.get("/", (req, res) => res.send("Hello, I am OK now!"));
     app.get("/weather/current/", (req, res) =>
       weather_route.send_current_weather_by_location(req, res)
