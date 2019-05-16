@@ -1,5 +1,6 @@
 var mongoClient = require("mongodb").MongoClient;
-const url = "mongodb://server:5sLUdMe7XGk2iSM@ds153766.mlab.com:53766/weather";
+// const url = "mongodb://server:5sLUdMe7XGk2iSM@ds153766.mlab.com:53766/weather";
+const url = "mongodb://localhost:27017/weather"
 // 'mongodb://linh:dEG5kkBdWqFeCQ6@ds147454.mlab.com:47454/alpha'
 var ObjectId = require("mongodb").ObjectID;
 var dbmodel = {
@@ -186,4 +187,4 @@ function objectIdWithTimestamp(timestamp) {
 }
 
 module.exports = dbmodel;
-// dbmodel.getListNews_orderByLocation(4,0,21,105).then(r=> console.log(r)).catch(e=> console.log(e));
+// dbmodel.getListNews_orderByLocation(4, 0, 21, 105).then(r => console.log(r)).catch(e => console.log(e));
