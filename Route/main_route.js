@@ -12,7 +12,7 @@ module.exports = {
     app.get("/weather/current/:cityName", (req, res) =>
       weather_route.send_current_weather_by_cityName(req, res)
     ); //ok
-    app.get("/weather/postcast5day/", (req, res) =>
+    app.get("/weather/", (req, res) =>
       weather_route.send_fiveday_weather_by_location(req, res)
     ); //ok
     app.get("/weather/postcast5day/:cityName", (req, res) =>
@@ -39,6 +39,7 @@ module.exports = {
     app.get("/news/newsID=:newsID", (req, res) => news_route.getNews(req, res));
     app.get("/news/newsID=:newsID", (req, res) => news_route.getNews(req, res));
     app.post("/news/newpost", (req, res) => news_route.addNews(req, res));
+    app.patch("/user/favorite", jsonParser, (req, res) => user_route.updateFavoriteCity(req, res));
   }
 };
 
