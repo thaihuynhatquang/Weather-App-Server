@@ -33,7 +33,8 @@ var user_router = {
                 userID: r._id,
                 token: x,
                 name: r.name,
-                avatar: r.avatar
+                avatar: r.avatar,
+                favorite: r.favorite
               })
             );
           })
@@ -59,7 +60,8 @@ var user_router = {
                     userID: id,
                     token: x,
                     name: tokenInfo.name,
-                    avatar: tokenInfo.picture
+                    avatar: tokenInfo.picture,
+                    favorite: []
                   })
                 );
               })
