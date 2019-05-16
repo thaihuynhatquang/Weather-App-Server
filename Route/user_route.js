@@ -45,7 +45,8 @@ var user_router = {
               name: tokenInfo.name,
               // listBannedWebSite: [],
               username: tokenInfo.email,
-              dark: tokenInfo.sub
+              dark: tokenInfo.sub,
+              favorite: []
             };
             db.addUser(newuser)
               .then(id => {
